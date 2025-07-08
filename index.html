@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue Sample</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- Binding variable -->
+      <span>{{test}}</span>
+      <span>{{name}}</span>
+
+      <!-- v-if statement -->
+
+      <div v-if="mydisplay>5">My display is showing</div>
+
+      <div v-if="name.length < 6">
+        <span>{{name}}</span>
+      </div>
+
+      <!-- v-for statement Array-->
+
+      <ul>
+        <li v-for="st in students">{{st}}</li>
+      </ul>
+
+      <!-- V-for statement for Object -->
+      <ul>
+        <li v-for="p in persons">{{p.name}} - {{p.loc}}</li>
+      </ul>
+
+      <!-- methods -->
+      <button @click="removeStudent">Remove Student</button>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.7.16/vue.min.js"></script>
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          test: "test data",
+          name: "Alex",
+          mydisplay: 7,
+          students: ["Alex", "Alisa", "Ben", "Jeff"],
+          persons: [
+            { name: "John", loc: "MSA" },
+            { name: "Alex", loc: "NBO" },
+            { name: "Ken", loc: "ELD" },
+          ],
+        },
+        methods: {
+          removeStudent() {
+            this.students.pop();
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
