@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Navbar</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarTogglerDemo02"
+            aria-controls="navbarTogglerDemo02"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+              </li>
+            </ul>
+            <form class="d-flex" role="search">
+              <input
+                class="form-control me-2"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <button class="btn btn-outline-success" type="submit">
+                Search
+              </button>
+            </form>
+          </div>
+        </div>
+      </nav>
+      <br>
+      <br>
+      <div id="app">
+        <!-- populate products from flaskapi -->
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Buying Price</th>
+              <th>Selling Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- loop through products -->
+            <tr v-for="prod in products">
+              <td>{{prod.id}}</td>
+              <td>{{prod.name}}</td>
+              <td>{{prod.bp}}</td>
+              <td>{{prod.sp}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.7.16/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.0/axios.min.js"></script>
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          products: [],
+        },
+        methods: {},
+        mounted() {
+          axios
+            .get("http://127.0.0.1:5000/api/products")
+            .then((results) => {
+              this.products = results.data;
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        },
+      });
+    </script>
+  </body>
+</html>
