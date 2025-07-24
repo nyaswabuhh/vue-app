@@ -3,57 +3,72 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vue Sample</title>
+    <title>Products</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css"
+    />
   </head>
   <body>
-    <div id="app">
-      <!-- Binding variable -->
-      <span>{{test}}</span>
-      <span>{{name}}</span>
+    <div class="container">
+      <nav
+        class="navbar navbar-expand-lg navbar-light"
+        style="background-color: #e3f2fd"
+      >
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">DukaPOS</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarTogglerDemo02"
+            aria-controls="navbarTogglerDemo02"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/index.html">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/dashboard.html">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/products.html">Products</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/sales.html">Sales</a>
+              </li>
+            </ul>
+            <form class="d-flex" role="search">
+              <input
+                class="form-control me-2"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <button class="btn btn-outline-success" type="submit">
+                Search
+              </button>
+            </form>
+          </div>
+        </div>
+      </nav>
+      <br />
+      <br />
+    <div class="container">
 
-      <!-- v-if statement -->
-
-      <div v-if="mydisplay>5">My display is showing</div>
-
-      <div v-if="name.length < 6">
-        <span>{{name}}</span>
-      </div>
-
-      <!-- v-for statement Array-->
-
-      <ul>
-        <li v-for="st in students">{{st}}</li>
-      </ul>
-
-      <!-- V-for statement for Object -->
-      <ul>
-        <li v-for="p in persons">{{p.name}} - {{p.loc}}</li>
-      </ul>
-
-      <!-- methods -->
-      <button @click="removeStudent">Remove Student</button>
+    <h1 style="text-align: center;">Welcome to DukaPOS</h1>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.7.16/vue.min.js"></script>
-    <script>
-      new Vue({
-        el: "#app",
-        data: {
-          test: "test data",
-          name: "Alex",
-          mydisplay: 7,
-          students: ["Alex", "Alisa", "Ben", "Jeff"],
-          persons: [
-            { name: "John", loc: "MSA" },
-            { name: "Alex", loc: "NBO" },
-            { name: "Ken", loc: "ELD" },
-          ],
-        },
-        methods: {
-          removeStudent() {
-            this.students.pop();
-          },
-        },
-      });
-    </script>
+ 
   </body>
 </html>
