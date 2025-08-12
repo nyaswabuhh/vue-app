@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sales Dashboard</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+      crossorigin="anonymous"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.0/axios.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <nav
+        class="navbar navbar-expand-lg navbar-light"
+        style="background-color: #e3f2fd"
+      >
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">DukaPOS</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarTogglerDemo02"
+            aria-controls="navbarTogglerDemo02"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  aria-current="page"
+                  href="/index.html"
+                  >Home</a
+                >
+              </li>
+               <li class="nav-item">
+                <a class="nav-link" href="/salesdashboard.html">Sales Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/productsdashboard.html">Products Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/products.html">Products</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/sales.html">Sales</a>
+              </li>
+            </ul>
+            <form class="d-flex" role="search">
+              <input
+                class="form-control me-2"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <button class="btn btn-outline-success" type="submit">
+                Search
+              </button>
+            </form>
+          </div>
+        </div>
+      </nav>
+      <br />
+      <br />
+      <div id="salesdash" class="container">
+        <h1 style="text-align: center">Sales Dashboard</h1>
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <canvas id="salesQuantityChart" height="100"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"
+      ></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.7.16/vue.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.0/axios.min.js"></script>
+
+      <script>
+        const app = new Vue({
+          el: "#salesdash",
+
+          data: {
+            loading: true,
+            sales_date: [],
+            products_quantity: [],
+          },
+          methods: {
+            fetchSalesDashboard() {
+              myheader = {
+                headers: {
+                  Authorization: "Bearer " + localStorage.getItem("token"),
+                },
+              };
+              axios
+                .get("http://127.0.0.1:5000/api/saleschart", myheader)
+                .then((res) => {
+                  this.sales_date = res.data.sales_date;
+                  this.products_quantity = res.data.products_quantity;
+                  console.log(this.sales_date);
+                  console.log(this.products_quantity);
+                  this.loading = false;
+                  this.loadLineChart();
+                })
+                .catch((err) => {
+                  console.error("Error loading sales dashboard:", err);
+                //   alert("Unable to load sales dashboard");
+                //   window.location.href = "login.html";
+                });
+            },
+            loadLineChart() {
+              new Chart(document.getElementById("salesQuantityChart"), {
+                type: "line",
+                data: {
+                  labels: this.sales_date,
+                  datasets: [
+                    {
+                      label: "Sales Qty Datewise",
+                      data: this.products_quantity,
+                    },
+                  ],
+                },
+                options: {
+                  legend: { display: false },
+                  title: {
+                    display: true,
+                    text: "Sales Qty By Date",
+                  },
+                },
+              });
+            },
+          },
+
+          mounted() {
+            this.fetchSalesDashboard();
+          },
+        });
+      </script>
+    </div>
+  </body>
+</html>

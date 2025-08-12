@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FLASK STK PUSH</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div id="app" class="container py-5">
+      <h1 class="mb-4 text-center">FLASK STK Push Payment</h1>
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <form
+            @submit.prevent="stkPush"
+            class="border p-4 rounded shadow-sm bg-light"
+          >
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone Number</label>
+              <input
+                id="phone"
+                type="text"
+                class="form-control"
+                placeholder="2547XXXXXXXX or 2541XXXXXXXX"
+                minlength="12"
+                v-model="phone"
+                autocomplete="off"
+              />
+              <div v-if="phoneError" class="text-danger mt-1">
+                {{ phoneError }}
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="amount" class="form-label">Amount (KES)</label>
+              <input
+                id="amount"
+                type="number"
+                class="form-control"
+                placeholder="1"
+                v-model.number="amount"
+                min="1"
+              />
+              <div v-if="amountError" class="text-danger mt-1">
+                {{ amountError }}
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="sale_id" class="form-label">Sale ID</label>
+              <input
+                id="sale_id"
+                type="text"
+                class="form-control"
+                placeholder="1"
+                v-model="sale_id"
+              />
+              <div v-if="saleIdError" class="text-danger mt-1">
+                {{ saleIdError }}
+              </div>
+            </div>
+            <button
+              type="submit"
+              class="btn btn-primary w-100"
+              :disabled="loading"
+            >
+              {{ loading ? "Processing..." : "Make Payment" }}
+            </button>
+          </form>
+          <div v-if="message" :class="`alert mt-4 ${messageType}`" role="alert">
+            {{ message }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.3.0/dist/axios.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          phone: "",
+          sale_id: "",
+          amount: null,
+          loading: false,
+          phoneError: "",
+          amountError: "",
+          saleIdError: "",
+          message: "",
+          messageType: "",
+        },
+        methods: {
+          validate() {
+            this.phoneError = "";
+            this.amountError = "";
+            this.saleIdError = "";
+            let valid = true;
+
+            // if (!/^0[17]\d{8}$/.test(this.phone)) {
+            //   this.phoneError =
+            //     "Enter a valid Safaricom number (e.g., 07XXXXXXXX or 01XXXXXXXX).";
+            //   valid = false;
+            // }
+            if (!this.sale_id) {
+              this.saleIdError = "Enter Sale Id";
+              valid = false;
+            }
+
+            if (!this.amount || this.amount < 1) {
+              this.amountError = "Amount must be at least 1.";
+              valid = false;
+            }
+
+            return valid;
+          },
+          stkPush() {
+            if (!this.validate()) return;
+
+            this.loading = true;
+            this.message = "";
+
+            axios
+              .post("http://127.0.0.1:5000/api/stkpush", {
+                phone: this.phone,
+                amount: this.amount,
+                sale_id: this.sale_id,
+              })
+              .then(() => {
+                this.message = "Payment request sent successfully!";
+                this.messageType = "alert-success";
+                this.phone = "";
+                (this.sale_id = ""), (this.amount = null);
+
+                setTimeout(() => {
+                  this.message = "";
+                }, 5000);
+              })
+              .catch(() => {
+                this.message = "STK Push failed. Please try again.";
+                this.messageType = "alert-danger";
+
+                setTimeout(() => {
+                  this.message = "";
+                }, 5000);
+              })
+              .finally(() => {
+                this.loading = false;
+              });
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
