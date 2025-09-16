@@ -70,7 +70,7 @@
             };
             console.log(data);
             axios
-              .post("http://127.0.0.1:5000/api/login", data)
+              .post("http://134.209.248.174:5000/api/login", data)
               .then((res) => {
                 console.log(res.data);
                 localStorage.setItem("token", res.data.token);

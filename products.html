@@ -230,7 +230,7 @@
               },
             };
             axios
-              .get("http://127.0.0.1:5000/api/products", myheader)
+              .get("http://134.209.248.174:5000/api/products", myheader)
               .then((results) => {
                 this.products = results.data;
               })
@@ -251,7 +251,7 @@
               };
 
               axios
-                .post("http://127.0.0.1:5000/api/products", data, myheader)
+                .post("http://134.209.248.174:5000/api/products", data, myheader)
                 .then((res) => {
                   this.textcolor = "green";
                   this.message = "Product added successfully";
